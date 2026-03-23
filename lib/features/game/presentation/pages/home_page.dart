@@ -167,6 +167,11 @@ class _NewGameDialogState extends State<_NewGameDialog> {
     super.dispose();
   }
 
+  // Returns true if the player at the given index can be removed.
+  // Only the last player can be removed, and only if there are more than 3 players.
+  bool _canRemovePlayer(int index) =>
+      _playerCount > 3 && index == _playerCount - 1;
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -186,7 +191,7 @@ class _NewGameDialogState extends State<_NewGameDialog> {
               PlayerNameField(
                 controller: _playerControllers[i],
                 label: 'Spieler ${i + 1}',
-                onRemove: _playerCount > 3 && i == _playerCount - 1
+                onRemove: _canRemovePlayer(i)
                     ? () => setState(() => _playerCount--)
                     : null,
               ),

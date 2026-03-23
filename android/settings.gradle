@@ -5,8 +5,12 @@ def properties = new Properties()
 
 assert localPropertiesFile.exists()
 localPropertiesFile.text.split("\\n").each { line ->
-    def (key, value) = line.split('=', 2).collect { it.trim() }
-    properties[key] = value
+    def trimmed = line.trim()
+    if (trimmed.isEmpty() || trimmed.startsWith('#') || !trimmed.contains('=')) return
+    def parts = trimmed.split('=', 2).collect { it.trim() }
+    if (parts.size() == 2) {
+        properties[parts[0]] = parts[1]
+    }
 }
 
 def flutterSdkPath = properties.getProperty("flutter.sdk")
