@@ -78,8 +78,8 @@ class GameCubit extends Cubit<GameState> {
         case GameMode.solo:
         case GameMode.wenz:
         case GameMode.geier:
-          // 1 winner gets +3*points, 3 losers each get -points
-          delta = isWinner ? points * 3 : -points;
+          // 1 winner gets +(players-1)*points, each loser gets -points
+          delta = isWinner ? points * (players.length - 1) : -points;
           break;
       }
       return player.copyWith(points: player.points + delta);
