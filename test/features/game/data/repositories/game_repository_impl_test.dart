@@ -21,6 +21,10 @@ void main() {
   late GameRepositoryImpl repository;
   late MockGameLocalDataSource mockDataSource;
 
+  setUpAll(() {
+    registerFallbackValue(_gameModel);
+  });
+
   setUp(() {
     mockDataSource = MockGameLocalDataSource();
     repository = GameRepositoryImpl(localDataSource: mockDataSource);

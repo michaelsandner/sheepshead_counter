@@ -31,6 +31,10 @@ void main() {
   late GameCubit cubit;
   late MockSaveGameUseCase mockSave;
 
+  setUpAll(() {
+    registerFallbackValue(_game);
+  });
+
   setUp(() {
     mockSave = MockSaveGameUseCase();
     cubit = GameCubit(saveGame: mockSave);

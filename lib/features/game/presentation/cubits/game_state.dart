@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:sheepshead_counter/features/game/domain/entities/game.dart';
 
-abstract class GameState extends Equatable {
+sealed class GameState extends Equatable {
   const GameState();
   @override
   List<Object?> get props => [];

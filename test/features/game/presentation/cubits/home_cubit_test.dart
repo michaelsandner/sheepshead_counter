@@ -32,6 +32,10 @@ void main() {
   late MockGetAllGamesUseCase mockGetAll;
   late MockCreateGameUseCase mockCreate;
 
+  setUpAll(() {
+    registerFallbackValue(const GameConfig());
+  });
+
   setUp(() {
     mockGetAll = MockGetAllGamesUseCase();
     mockCreate = MockCreateGameUseCase();
