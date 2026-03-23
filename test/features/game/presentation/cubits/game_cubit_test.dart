@@ -1,11 +1,11 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/game.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/game_config.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/game_mode.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/player.dart';
-import 'package:sheepshead_counter/features/game/domain/usecases/save_game_use_case.dart';
+import 'package:sheepshead_counter/domain/entities/game.dart';
+import 'package:sheepshead_counter/domain/entities/game_config.dart';
+import 'package:sheepshead_counter/domain/entities/game_mode.dart';
+import 'package:sheepshead_counter/domain/entities/player.dart';
+import 'package:sheepshead_counter/domain/usecases/save_game_use_case.dart';
 import 'package:sheepshead_counter/features/game/presentation/cubits/game_cubit.dart';
 import 'package:sheepshead_counter/features/game/presentation/cubits/game_state.dart';
 

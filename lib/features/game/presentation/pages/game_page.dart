@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/game.dart';
-import 'package:sheepshead_counter/features/game/domain/usecases/calculate_points_use_case.dart';
+import 'package:sheepshead_counter/domain/entities/game.dart';
+import 'package:sheepshead_counter/domain/usecases/calculate_points_use_case.dart';
 import 'package:sheepshead_counter/features/game/presentation/cubits/game_cubit.dart';
 import 'package:sheepshead_counter/features/game/presentation/cubits/game_state.dart';
 import 'package:sheepshead_counter/features/game/presentation/widgets/add_entry_bottom_sheet.dart';
@@ -124,8 +124,11 @@ class _PlayerScoreSection extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-          children:
-              game.players.map((p) => PlayerScoreCard(player: p)).toList(),
+          children: game.players
+              .asMap()
+              .entries
+              .map((e) => PlayerScoreCard(player: e.value, playerIndex: e.key))
+              .toList(),
         ),
       ),
     );

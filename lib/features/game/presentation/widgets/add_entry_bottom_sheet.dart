@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/game.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/game_entry.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/game_mode.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/player.dart';
-import 'package:sheepshead_counter/features/game/domain/usecases/calculate_points_use_case.dart';
+import 'package:sheepshead_counter/domain/entities/game.dart';
+import 'package:sheepshead_counter/domain/entities/game_entry.dart';
+import 'package:sheepshead_counter/domain/entities/game_mode.dart';
+import 'package:sheepshead_counter/domain/entities/player.dart';
+import 'package:sheepshead_counter/domain/usecases/calculate_points_use_case.dart';
 import 'package:sheepshead_counter/features/game/presentation/cubits/game_cubit.dart';
+import 'package:sheepshead_counter/features/game/presentation/widgets/player_colors.dart';
 
 class AddEntryDialog extends StatefulWidget {
   final Game game;
@@ -28,10 +29,10 @@ class _AddEntryDialogState extends State<AddEntryDialog> {
 
   List<Player> get _players => widget.game.players;
 
-  // Rufspiel requires 4 players; with 3 players only Solo/Wenz available
+  // Rufspiel requires 4 players; with 3 players only Solo/Wenz/Geier available
   List<GameMode> get _availableModes {
     if (_players.length < 4) {
-      return [GameMode.solo, GameMode.wenz];
+      return [GameMode.solo, GameMode.wenz, GameMode.geier];
     }
     return GameMode.values;
   }
@@ -199,6 +200,8 @@ class _GameModeSelector extends StatelessWidget {
         return 'Solo';
       case GameMode.wenz:
         return 'Wenz';
+      case GameMode.geier:
+        return 'Geier';
     }
   }
 }
@@ -220,11 +223,27 @@ class _WinnerSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 8,
-      children: players.map((player) {
+      runSpacing: 4,
+      children: players.asMap().entries.map((entry) {
+        final index = entry.key;
+        final player = entry.value;
         final isSelected = selectedIds.contains(player.id);
+        final accent = PlayerColors.accent(index);
+        final container = PlayerColors.container(index);
         return FilterChip(
-          label: Text(player.name),
+          label: Text(
+            player.name,
+            style: TextStyle(
+              color: isSelected ? accent : accent.withAlpha(180),
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
           selected: isSelected,
+          selectedColor: container,
+          checkmarkColor: accent,
+          side: BorderSide(
+            color: isSelected ? accent : accent.withAlpha(80),
+          ),
           onSelected: (selected) => onChanged(player.id, selected),
         );
       }).toList(),
