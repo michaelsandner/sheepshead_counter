@@ -89,8 +89,24 @@ void main() {
           spritze: 2,
           timestamp: DateTime(2024),
         );
-        // (30 + 15) * 4 = 180
+        // (30 + 15) * 2^2 = 45 * 4 = 180
         expect(useCase(entry, config), 180);
+      });
+    });
+  });
+
+  group('Given a Rufspiel entry with Spritze=3', () {
+    group('When calculating points', () {
+      test('Then doubles the value three times (x8)', () {
+        final entry = GameEntry(
+          id: '6',
+          gameMode: GameMode.rufspiel,
+          winnerIds: const ['a', 'b'],
+          spritze: 3,
+          timestamp: DateTime(2024),
+        );
+        // 10 * 2^3 = 80
+        expect(useCase(entry, config), 80);
       });
     });
   });
