@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../domain/entities/game_config.dart';
-import '../../domain/usecases/create_game_use_case.dart';
-import '../../domain/usecases/get_all_games_use_case.dart';
-import 'home_state.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game_config.dart';
+import 'package:sheepshead_counter/features/game/domain/usecases/create_game_use_case.dart';
+import 'package:sheepshead_counter/features/game/domain/usecases/get_all_games_use_case.dart';
+import 'package:sheepshead_counter/features/game/presentation/cubits/home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final GetAllGamesUseCase getAllGames;
@@ -16,7 +16,7 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       final games = await getAllGames();
       emit(HomeLoaded(games: games));
-    } catch (e) {
+    } on Exception catch (e) {
       emit(HomeError(message: e.toString()));
     }
   }
@@ -27,10 +27,11 @@ class HomeCubit extends Cubit<HomeState> {
     GameConfig config = const GameConfig(),
   }) async {
     try {
-      final game = await createGame(name: name, playerNames: playerNames, config: config);
+      final game = await createGame(
+          name: name, playerNames: playerNames, config: config);
       final games = await getAllGames();
       emit(HomeGameCreated(game: game, games: games));
-    } catch (e) {
+    } on Exception catch (e) {
       emit(HomeError(message: e.toString()));
     }
   }

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../domain/entities/game.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game.dart';
 
 sealed class HomeState extends Equatable {
   const HomeState();

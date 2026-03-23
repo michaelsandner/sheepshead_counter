@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../domain/entities/game_entry.dart';
-import '../../domain/entities/game_mode.dart';
-import '../../domain/entities/player.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game_entry.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game_mode.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/player.dart';
 
 class GameEntryListItem extends StatelessWidget {
   final GameEntry entry;
@@ -66,8 +66,12 @@ class _EntryDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final parts = <String>[];
-    if (entry.spritze != null) parts.add('Spritze: ${entry.spritze}');
-    if (entry.laufende != null) parts.add('Laufende: ${entry.laufende}');
+    if (entry.spritze != null) {
+      parts.add('Spritze: ${entry.spritze}');
+    }
+    if (entry.laufende != null) {
+      parts.add('Laufende: ${entry.laufende}');
+    }
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,

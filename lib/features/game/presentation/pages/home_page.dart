@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../injection_container.dart' as di;
-import '../../domain/entities/game.dart';
-import '../../domain/entities/game_config.dart';
-import '../cubits/game_cubit.dart';
-import '../cubits/home_cubit.dart';
-import '../cubits/home_state.dart';
-import '../widgets/player_name_field.dart';
-import 'game_page.dart';
+import 'package:sheepshead_counter/injection_container.dart' as di;
+import 'package:sheepshead_counter/features/game/domain/entities/game.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game_config.dart';
+import 'package:sheepshead_counter/features/game/presentation/cubits/game_cubit.dart';
+import 'package:sheepshead_counter/features/game/presentation/cubits/home_cubit.dart';
+import 'package:sheepshead_counter/features/game/presentation/cubits/home_state.dart';
+import 'package:sheepshead_counter/features/game/presentation/widgets/player_name_field.dart';
+import 'package:sheepshead_counter/features/game/presentation/pages/game_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -32,7 +32,8 @@ class HomePage extends StatelessWidget {
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           ),
           body: switch (state) {
-            HomeInitial() || HomeLoading() =>
+            HomeInitial() ||
+            HomeLoading() =>
               const Center(child: CircularProgressIndicator()),
             HomeError() => const Center(child: Text('Fehler beim Laden')),
             HomeLoaded() => _HomeContent(games: state.games),
@@ -51,14 +52,18 @@ class HomePage extends StatelessWidget {
   void _navigateToGame(BuildContext context, Game game) {
     Navigator.of(context)
         .push(
-          MaterialPageRoute(
-            builder: (_) => BlocProvider(
-              create: (_) => di.sl<GameCubit>()..loadGame(game),
-              child: const GamePage(),
-            ),
-          ),
-        )
-        .then((_) => context.read<HomeCubit>().loadGames());
+      MaterialPageRoute(
+        builder: (_) => BlocProvider(
+          create: (_) => di.sl<GameCubit>()..loadGame(game),
+          child: const GamePage(),
+        ),
+      ),
+    )
+        .then((_) {
+      if (context.mounted) {
+        context.read<HomeCubit>().loadGames();
+      }
+    });
   }
 
   void _showNewGameDialog(BuildContext context) {
@@ -119,14 +124,18 @@ class _GameListItem extends StatelessWidget {
         onTap: () {
           Navigator.of(context)
               .push(
-                MaterialPageRoute(
-                  builder: (_) => BlocProvider(
-                    create: (_) => di.sl<GameCubit>()..loadGame(game),
-                    child: const GamePage(),
-                  ),
-                ),
-              )
-              .then((_) => context.read<HomeCubit>().loadGames());
+            MaterialPageRoute(
+              builder: (_) => BlocProvider(
+                create: (_) => di.sl<GameCubit>()..loadGame(game),
+                child: const GamePage(),
+              ),
+            ),
+          )
+              .then((_) {
+            if (context.mounted) {
+              context.read<HomeCubit>().loadGames();
+            }
+          });
         },
       ),
     );
@@ -186,7 +195,8 @@ class _NewGameDialogState extends State<_NewGameDialog> {
               decoration: const InputDecoration(labelText: 'Spielname'),
             ),
             const SizedBox(height: 16),
-            const Text('Spieler:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('Spieler:',
+                style: TextStyle(fontWeight: FontWeight.bold)),
             for (int i = 0; i < _playerCount; i++)
               PlayerNameField(
                 controller: _playerControllers[i],
@@ -202,7 +212,8 @@ class _NewGameDialogState extends State<_NewGameDialog> {
                 label: const Text('Spieler hinzufügen'),
               ),
             const SizedBox(height: 16),
-            const Text('Punkte:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('Punkte:',
+                style: TextStyle(fontWeight: FontWeight.bold)),
             if (_playerCount == 4)
               _PointsField(
                 label: 'Rufspiel',
@@ -229,7 +240,9 @@ class _NewGameDialogState extends State<_NewGameDialog> {
 
   void _submit() {
     final name = _nameController.text.trim();
-    if (name.isEmpty) return;
+    if (name.isEmpty) {
+      return;
+    }
 
     final playerNames = _playerControllers
         .take(_playerCount)
@@ -237,7 +250,9 @@ class _NewGameDialogState extends State<_NewGameDialog> {
         .where((n) => n.isNotEmpty)
         .toList();
 
-    if (playerNames.length < 3) return;
+    if (playerNames.length < 3) {
+      return;
+    }
 
     final config = GameConfig(
       rufspielPoints: int.tryParse(_rufspielController.text) ?? 10,

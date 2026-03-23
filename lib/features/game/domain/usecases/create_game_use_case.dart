@@ -1,8 +1,8 @@
 import 'package:uuid/uuid.dart';
-import '../entities/game.dart';
-import '../entities/game_config.dart';
-import '../entities/player.dart';
-import '../repositories/game_repository.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game_config.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/player.dart';
+import 'package:sheepshead_counter/features/game/domain/repositories/game_repository.dart';
 
 class CreateGameUseCase {
   final GameRepository repository;
@@ -15,16 +15,14 @@ class CreateGameUseCase {
     required List<String> playerNames,
     GameConfig config = const GameConfig(),
   }) async {
-    final players = playerNames
-        .map((n) => Player(id: _uuid.v4(), name: n, points: 0))
-        .toList();
+    final players =
+        playerNames.map((n) => Player(id: _uuid.v4(), name: n)).toList();
     final game = Game(
       id: _uuid.v4(),
       name: name,
       players: players,
       config: config,
       entries: const [],
-      isFinished: false,
       createdAt: DateTime.now(),
     );
     await repository.saveGame(game);

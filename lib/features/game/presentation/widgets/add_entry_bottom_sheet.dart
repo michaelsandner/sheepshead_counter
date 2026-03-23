@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../domain/entities/game.dart';
-import '../../domain/entities/game_entry.dart';
-import '../../domain/entities/game_mode.dart';
-import '../../domain/entities/player.dart';
-import '../../domain/usecases/calculate_points_use_case.dart';
-import '../cubits/game_cubit.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game_entry.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game_mode.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/player.dart';
+import 'package:sheepshead_counter/features/game/domain/usecases/calculate_points_use_case.dart';
+import 'package:sheepshead_counter/features/game/presentation/cubits/game_cubit.dart';
 
 class AddEntryDialog extends StatefulWidget {
   final Game game;
@@ -30,7 +30,9 @@ class _AddEntryDialogState extends State<AddEntryDialog> {
 
   // Rufspiel requires 4 players; with 3 players only Solo/Wenz available
   List<GameMode> get _availableModes {
-    if (_players.length < 4) return [GameMode.solo, GameMode.wenz];
+    if (_players.length < 4) {
+      return [GameMode.solo, GameMode.wenz];
+    }
     return GameMode.values;
   }
 
@@ -248,13 +250,13 @@ class _NullableNumberPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = [
-      const DropdownMenuItem<int?>(value: null, child: Text('-')),
+      const DropdownMenuItem<int?>(child: Text('-')),
       for (int i = min; i <= max; i++)
         DropdownMenuItem<int?>(value: i, child: Text('$i')),
     ];
 
     return DropdownButtonFormField<int?>(
-      value: value,
+      initialValue: value,
       decoration: InputDecoration(labelText: label, isDense: true),
       items: items,
       onChanged: onChanged,

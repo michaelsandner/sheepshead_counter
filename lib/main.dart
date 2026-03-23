@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'injection_container.dart' as di;
-import 'features/game/presentation/cubits/home_cubit.dart';
-import 'features/game/presentation/pages/home_page.dart';
+import 'package:sheepshead_counter/injection_container.dart' as di;
+import 'package:sheepshead_counter/features/game/presentation/cubits/home_cubit.dart';
+import 'package:sheepshead_counter/features/game/presentation/pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

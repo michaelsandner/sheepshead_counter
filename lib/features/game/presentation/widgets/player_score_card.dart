@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../domain/entities/player.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/player.dart';
 
 class PlayerScoreCard extends StatelessWidget {
   final Player player;
@@ -10,9 +10,7 @@ class PlayerScoreCard extends StatelessWidget {
     final isPositive = player.points >= 0;
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 4),
-      color: isPositive
-          ? Colors.green.shade50
-          : Colors.red.shade50,
+      color: isPositive ? Colors.green.shade50 : Colors.red.shade50,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
