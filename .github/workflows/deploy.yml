@@ -23,10 +23,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Read Flutter version from FVM config
+        id: fvm
+        run: echo "FLUTTER_VERSION=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.2'
+          flutter-version: ${{ steps.fvm.outputs.FLUTTER_VERSION }}
           channel: 'stable'
 
       - name: Install dependencies
@@ -42,10 +46,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Read Flutter version from FVM config
+        id: fvm
+        run: echo "FLUTTER_VERSION=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.2'
+          flutter-version: ${{ steps.fvm.outputs.FLUTTER_VERSION }}
           channel: 'stable'
 
       - name: Install dependencies
@@ -62,10 +70,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Read Flutter version from FVM config
+        id: fvm
+        run: echo "FLUTTER_VERSION=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.2'
+          flutter-version: ${{ steps.fvm.outputs.FLUTTER_VERSION }}
           channel: 'stable'
 
       - name: Install dependencies
