@@ -275,7 +275,7 @@ class _NullableNumberPicker extends StatelessWidget {
     ];
 
     return DropdownButtonFormField<int?>(
-      initialValue: value,
+      value: value,
       decoration: InputDecoration(labelText: label, isDense: true),
       items: items,
       onChanged: onChanged,
