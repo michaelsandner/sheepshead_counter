@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/game.dart';
+import '../../domain/entities/game_entry.dart';
 import '../../domain/entities/game_mode.dart';
 import '../../domain/entities/player.dart';
+import '../../domain/usecases/calculate_points_use_case.dart';
 import '../cubits/game_cubit.dart';
 
-class AddEntryBottomSheet extends StatefulWidget {
+class AddEntryDialog extends StatefulWidget {
   final Game game;
-  const AddEntryBottomSheet({super.key, required this.game});
+  const AddEntryDialog({super.key, required this.game});
 
   @override
-  State<AddEntryBottomSheet> createState() => _AddEntryBottomSheetState();
+  State<AddEntryDialog> createState() => _AddEntryDialogState();
 }
 
-class _AddEntryBottomSheetState extends State<AddEntryBottomSheet> {
+class _AddEntryDialogState extends State<AddEntryDialog> {
   GameMode _selectedMode = GameMode.rufspiel;
   final Set<String> _selectedWinnerIds = {};
   int? _spritze;
   int? _laufende;
+
+  final _calculatePoints = CalculatePointsUseCase();
 
   bool get _isRufspiel => _selectedMode == GameMode.rufspiel;
   int get _requiredWinners => _isRufspiel ? 2 : 1;
@@ -30,6 +34,18 @@ class _AddEntryBottomSheetState extends State<AddEntryBottomSheet> {
     return GameMode.values;
   }
 
+  int get _previewValue {
+    final tempEntry = GameEntry(
+      id: '',
+      gameMode: _selectedMode,
+      winnerIds: const [],
+      spritze: _spritze,
+      laufende: _laufende,
+      timestamp: DateTime.now(),
+    );
+    return _calculatePoints(tempEntry, widget.game.config);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -40,88 +56,97 @@ class _AddEntryBottomSheetState extends State<AddEntryBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-        left: 16,
-        right: 16,
-        top: 16,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Eintrag hinzufügen',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: 16),
-          _GameModeSelector(
-            modes: _availableModes,
-            selected: _selectedMode,
-            onChanged: (mode) {
-              setState(() {
-                _selectedMode = mode;
-                _selectedWinnerIds.clear();
-              });
-            },
-          ),
-          const SizedBox(height: 12),
-          Text(
-            'Gewinner ($_requiredWinners auswählen):',
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          _WinnerSelector(
-            players: _players,
-            selectedIds: _selectedWinnerIds,
-            maxSelectable: _requiredWinners,
-            onChanged: (id, selected) {
-              setState(() {
-                if (selected) {
-                  if (_selectedWinnerIds.length < _requiredWinners) {
-                    _selectedWinnerIds.add(id);
-                  }
-                } else {
-                  _selectedWinnerIds.remove(id);
-                }
-              });
-            },
-          ),
-          const SizedBox(height: 12),
-          Row(
+    return Dialog(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: _NullableNumberPicker(
-                  label: 'Spritze',
-                  value: _spritze,
-                  min: 1,
-                  max: 3,
-                  onChanged: (v) => setState(() => _spritze = v),
+              Text(
+                'Eintrag hinzufügen',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 16),
+              _GameModeSelector(
+                modes: _availableModes,
+                selected: _selectedMode,
+                onChanged: (mode) {
+                  setState(() {
+                    _selectedMode = mode;
+                    _selectedWinnerIds.clear();
+                  });
+                },
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Gewinner ($_requiredWinners auswählen):',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              _WinnerSelector(
+                players: _players,
+                selectedIds: _selectedWinnerIds,
+                maxSelectable: _requiredWinners,
+                onChanged: (id, selected) {
+                  setState(() {
+                    if (selected) {
+                      if (_selectedWinnerIds.length < _requiredWinners) {
+                        _selectedWinnerIds.add(id);
+                      }
+                    } else {
+                      _selectedWinnerIds.remove(id);
+                    }
+                  });
+                },
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: _NullableNumberPicker(
+                      label: 'Spritze',
+                      value: _spritze,
+                      min: 1,
+                      max: 3,
+                      onChanged: (v) => setState(() => _spritze = v),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _NullableNumberPicker(
+                      label: 'Laufende',
+                      value: _laufende,
+                      min: 3,
+                      max: 8,
+                      onChanged: (v) => setState(() => _laufende = v),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: Text(
+                  'Wert: $_previewValue Pkt.',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                 ),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: _NullableNumberPicker(
-                  label: 'Laufende',
-                  value: _laufende,
-                  min: 3,
-                  max: 8,
-                  onChanged: (v) => setState(() => _laufende = v),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: _selectedWinnerIds.length == _requiredWinners
+                      ? _submit
+                      : null,
+                  child: const Text('Hinzufügen'),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton(
-              onPressed:
-                  _selectedWinnerIds.length == _requiredWinners ? _submit : null,
-              child: const Text('Hinzufügen'),
-            ),
-          ),
-          const SizedBox(height: 16),
-        ],
+        ),
       ),
     );
   }

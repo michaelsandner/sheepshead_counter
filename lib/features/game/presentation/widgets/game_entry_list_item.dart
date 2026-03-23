@@ -6,11 +6,13 @@ import '../../domain/entities/player.dart';
 class GameEntryListItem extends StatelessWidget {
   final GameEntry entry;
   final List<Player> players;
+  final int value;
 
   const GameEntryListItem({
     super.key,
     required this.entry,
     required this.players,
+    required this.value,
   });
 
   @override
@@ -28,7 +30,7 @@ class GameEntryListItem extends StatelessWidget {
         ),
         title: Text(_gameModeName(entry.gameMode)),
         subtitle: Text('Gewinner: $winnerNames'),
-        trailing: _EntryDetails(entry: entry),
+        trailing: _EntryDetails(entry: entry, value: value),
       ),
     );
   }
@@ -58,17 +60,31 @@ class GameEntryListItem extends StatelessWidget {
 
 class _EntryDetails extends StatelessWidget {
   final GameEntry entry;
-  const _EntryDetails({required this.entry});
+  final int value;
+  const _EntryDetails({required this.entry, required this.value});
 
   @override
   Widget build(BuildContext context) {
     final parts = <String>[];
     if (entry.spritze != null) parts.add('Spritze: ${entry.spritze}');
     if (entry.laufende != null) parts.add('Laufende: ${entry.laufende}');
-    if (parts.isEmpty) return const SizedBox.shrink();
-    return Text(
-      parts.join(' · '),
-      style: Theme.of(context).textTheme.bodySmall,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(
+          '$value Pkt.',
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium
+              ?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        if (parts.isNotEmpty)
+          Text(
+            parts.join(' · '),
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+      ],
     );
   }
 }

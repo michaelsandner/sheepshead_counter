@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/game.dart';
+import '../../domain/usecases/calculate_points_use_case.dart';
 import '../cubits/game_cubit.dart';
 import '../cubits/game_state.dart';
 import '../widgets/add_entry_bottom_sheet.dart';
@@ -79,12 +80,11 @@ class _GameContent extends StatelessWidget {
   }
 
   void _showAddEntry(BuildContext context) {
-    showModalBottomSheet(
+    showDialog(
       context: context,
-      isScrollControlled: true,
       builder: (_) => BlocProvider.value(
         value: context.read<GameCubit>(),
-        child: AddEntryBottomSheet(game: game),
+        child: AddEntryDialog(game: game),
       ),
     );
   }
@@ -137,6 +137,8 @@ class _GameEntriesSection extends StatelessWidget {
   final Game game;
   const _GameEntriesSection({required this.game});
 
+  static final _calculatePoints = CalculatePointsUseCase();
+
   @override
   Widget build(BuildContext context) {
     if (game.entries.isEmpty) {
@@ -153,7 +155,12 @@ class _GameEntriesSection extends StatelessWidget {
       itemCount: game.entries.length,
       itemBuilder: (context, index) {
         final entry = game.entries[game.entries.length - 1 - index];
-        return GameEntryListItem(entry: entry, players: game.players);
+        final value = _calculatePoints(entry, game.config);
+        return GameEntryListItem(
+          entry: entry,
+          players: game.players,
+          value: value,
+        );
       },
     );
   }
