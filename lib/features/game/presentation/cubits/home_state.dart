@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import '../../domain/entities/game.dart';
 
-abstract class HomeState extends Equatable {
+sealed class HomeState extends Equatable {
   const HomeState();
   @override
   List<Object?> get props => [];
