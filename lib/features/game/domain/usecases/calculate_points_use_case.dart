@@ -9,10 +9,9 @@ class CalculatePointsUseCase {
       baseValue += entry.laufende! * config.laufendePoints;
     }
     int value = baseValue;
-    if (entry.spritze != null) {
-      for (int i = 0; i < entry.spritze!; i++) {
-        value *= 2;
-      }
+    if (entry.spritze != null && entry.spritze! > 0) {
+      // Left-shift = multiply by 2^spritze (max picker value is 3, no overflow risk)
+      value = value << entry.spritze!;
     }
     return value;
   }
