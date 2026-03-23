@@ -14,7 +14,7 @@ class NewGameDialog extends StatefulWidget {
 class _NewGameDialogState extends State<NewGameDialog> {
   final _nameController = TextEditingController(text: 'Spiel');
   final _playerControllers = List.generate(
-    4,
+    5,
     (i) => TextEditingController(text: 'Spieler ${i + 1}'),
   );
   int _playerCount = 4;
@@ -118,7 +118,7 @@ class _NewGameDialogState extends State<NewGameDialog> {
                               : null,
                         ),
                       ),
-                    if (_playerCount < 4)
+                    if (_playerCount < 5)
                       Center(
                         child: TextButton.icon(
                           onPressed: () => setState(() => _playerCount++),
@@ -134,7 +134,7 @@ class _NewGameDialogState extends State<NewGameDialog> {
                       onToggle: () => setState(
                         () => _showPointsConfig = !_showPointsConfig,
                       ),
-                      showRufspiel: _playerCount == 4,
+                      showRufspiel: _playerCount >= 4,
                       rufspielController: _rufspielController,
                       soloController: _soloController,
                       wenzController: _wenzController,

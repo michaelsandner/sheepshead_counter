@@ -40,8 +40,17 @@ class GameCubit extends Cubit<GameState> {
     );
 
     final game = currentState.game;
+
+    // For 5-player games, determine which player sits out this round
+    String? sittingOutPlayerId;
+    if (game.players.length == 5) {
+      final sittingOutIndex = game.entries.length % game.players.length;
+      sittingOutPlayerId = game.players[sittingOutIndex].id;
+    }
+
     final points = _calculatePoints(entry, game.config);
-    final updatedPlayers = _applyPoints(game.players, entry, points);
+    final updatedPlayers =
+        _applyPoints(game.players, entry, points, sittingOutPlayerId);
     final updatedGame = game.copyWith(
       players: updatedPlayers,
       entries: [...game.entries, entry],
@@ -65,8 +74,16 @@ class GameCubit extends Cubit<GameState> {
     List<Player> players,
     GameEntry entry,
     int points,
+    String? sittingOutPlayerId,
   ) {
+    final activePlayers = sittingOutPlayerId != null
+        ? players.where((p) => p.id != sittingOutPlayerId).toList()
+        : players;
+
     return players.map((player) {
+      // Sitting-out player receives no points this round
+      if (player.id == sittingOutPlayerId) return player;
+
       final isWinner = entry.winnerIds.contains(player.id);
       int delta = 0;
 
@@ -78,8 +95,8 @@ class GameCubit extends Cubit<GameState> {
         case GameMode.solo:
         case GameMode.wenz:
         case GameMode.geier:
-          // 1 winner gets +(players-1)*points, each loser gets -points
-          delta = isWinner ? points * (players.length - 1) : -points;
+          // 1 winner gets +(activePlayers-1)*points, each loser gets -points
+          delta = isWinner ? points * (activePlayers.length - 1) : -points;
           break;
       }
       return player.copyWith(points: player.points + delta);

@@ -29,9 +29,18 @@ class _AddEntryDialogState extends State<AddEntryDialog> {
 
   List<Player> get _players => widget.game.players;
 
-  // Rufspiel requires 4 players; with 3 players only Solo/Wenz/Geier available
+  // For 5-player games, one player sits out each round based on round number
+  String? get _sittingOutPlayerId {
+    if (_players.length != 5) return null;
+    final index = widget.game.entries.length % _players.length;
+    return _players[index].id;
+  }
+
+  // Rufspiel requires at least 4 active players
   List<GameMode> get _availableModes {
-    if (_players.length < 4) {
+    final activeCount =
+        _sittingOutPlayerId != null ? _players.length - 1 : _players.length;
+    if (activeCount < 4) {
       return [GameMode.solo, GameMode.wenz, GameMode.geier];
     }
     return GameMode.values;
@@ -52,7 +61,9 @@ class _AddEntryDialogState extends State<AddEntryDialog> {
   @override
   void initState() {
     super.initState();
-    if (_players.length < 4) {
+    final activeCount =
+        _sittingOutPlayerId != null ? _players.length - 1 : _players.length;
+    if (activeCount < 4) {
       _selectedMode = GameMode.solo;
     }
   }
@@ -83,6 +94,20 @@ class _AddEntryDialogState extends State<AddEntryDialog> {
                 },
               ),
               const SizedBox(height: 12),
+              if (_sittingOutPlayerId != null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.pause_circle_outline, size: 16),
+                      const SizedBox(width: 4),
+                      Text(
+                        '${_players.firstWhere((p) => p.id == _sittingOutPlayerId).name} setzt aus',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                ),
               Text(
                 'Gewinner ($_requiredWinners auswählen):',
                 style: const TextStyle(fontWeight: FontWeight.bold),
@@ -91,6 +116,7 @@ class _AddEntryDialogState extends State<AddEntryDialog> {
                 players: _players,
                 selectedIds: _selectedWinnerIds,
                 maxSelectable: _requiredWinners,
+                disabledPlayerId: _sittingOutPlayerId,
                 onChanged: (id, selected) {
                   setState(() {
                     if (selected) {
@@ -210,12 +236,14 @@ class _WinnerSelector extends StatelessWidget {
   final List<Player> players;
   final Set<String> selectedIds;
   final int maxSelectable;
+  final String? disabledPlayerId;
   final void Function(String id, bool selected) onChanged;
 
   const _WinnerSelector({
     required this.players,
     required this.selectedIds,
     required this.maxSelectable,
+    this.disabledPlayerId,
     required this.onChanged,
   });
 
@@ -228,13 +256,18 @@ class _WinnerSelector extends StatelessWidget {
         final index = entry.key;
         final player = entry.value;
         final isSelected = selectedIds.contains(player.id);
+        final isDisabled = player.id == disabledPlayerId;
         final accent = PlayerColors.accent(index);
         final container = PlayerColors.container(index);
         return FilterChip(
           label: Text(
             player.name,
             style: TextStyle(
-              color: isSelected ? accent : accent.withAlpha(180),
+              color: isDisabled
+                  ? accent.withAlpha(80)
+                  : isSelected
+                      ? accent
+                      : accent.withAlpha(180),
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),
           ),
@@ -242,9 +275,13 @@ class _WinnerSelector extends StatelessWidget {
           selectedColor: container,
           checkmarkColor: accent,
           side: BorderSide(
-            color: isSelected ? accent : accent.withAlpha(80),
+            color: isDisabled
+                ? accent.withAlpha(40)
+                : isSelected
+                    ? accent
+                    : accent.withAlpha(80),
           ),
-          onSelected: (selected) => onChanged(player.id, selected),
+          onSelected: isDisabled ? null : (selected) => onChanged(player.id, selected),
         );
       }).toList(),
     );
