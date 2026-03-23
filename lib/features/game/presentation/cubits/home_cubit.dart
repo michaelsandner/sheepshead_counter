@@ -27,8 +27,9 @@ class HomeCubit extends Cubit<HomeState> {
     GameConfig config = const GameConfig(),
   }) async {
     try {
-      await createGame(name: name, playerNames: playerNames, config: config);
-      await loadGames();
+      final game = await createGame(name: name, playerNames: playerNames, config: config);
+      final games = await getAllGames();
+      emit(HomeGameCreated(game: game, games: games));
     } catch (e) {
       emit(HomeError(message: e.toString()));
     }
