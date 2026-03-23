@@ -44,5 +44,5 @@
 - German for UI texts
 - Methods and variables in English
 - Classes in PascalCase, files in snake_case
-- Each public class in a separate file
+- Each class in a separate file
 - Source code comments in English
