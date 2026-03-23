@@ -21,6 +21,9 @@ class HomePage extends StatelessWidget {
             SnackBar(content: Text(state.message)),
           );
         }
+        if (state is HomeGameCreated) {
+          _navigateToGame(context, state.game);
+        }
       },
       builder: (context, state) {
         return Scaffold(
@@ -33,6 +36,7 @@ class HomePage extends StatelessWidget {
               const Center(child: CircularProgressIndicator()),
             HomeError() => const Center(child: Text('Fehler beim Laden')),
             HomeLoaded() => _HomeContent(games: state.games),
+            HomeGameCreated() => _HomeContent(games: state.games),
           },
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () => _showNewGameDialog(context),
@@ -42,6 +46,19 @@ class HomePage extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _navigateToGame(BuildContext context, Game game) {
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute(
+            builder: (_) => BlocProvider(
+              create: (_) => di.sl<GameCubit>()..loadGame(game),
+              child: const GamePage(),
+            ),
+          ),
+        )
+        .then((_) => context.read<HomeCubit>().loadGames());
   }
 
   void _showNewGameDialog(BuildContext context) {
@@ -100,14 +117,16 @@ class _GameListItem extends StatelessWidget {
             ? const Icon(Icons.check_circle, color: Colors.green)
             : const Icon(Icons.play_circle, color: Colors.blue),
         onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => BlocProvider(
-                create: (_) => di.sl<GameCubit>()..loadGame(game),
-                child: const GamePage(),
-              ),
-            ),
-          );
+          Navigator.of(context)
+              .push(
+                MaterialPageRoute(
+                  builder: (_) => BlocProvider(
+                    create: (_) => di.sl<GameCubit>()..loadGame(game),
+                    child: const GamePage(),
+                  ),
+                ),
+              )
+              .then((_) => context.read<HomeCubit>().loadGames());
         },
       ),
     );

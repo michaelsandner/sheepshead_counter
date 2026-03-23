@@ -28,3 +28,11 @@ class HomeError extends HomeState {
   @override
   List<Object?> get props => [message];
 }
+
+class HomeGameCreated extends HomeState {
+  final Game game;
+  final List<Game> games;
+  const HomeGameCreated({required this.game, required this.games});
+  @override
+  List<Object?> get props => [game, games];
+}

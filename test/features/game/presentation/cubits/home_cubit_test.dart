@@ -74,4 +74,33 @@ void main() {
       );
     });
   });
+
+  group('Given a new game can be created', () {
+    setUp(() {
+      when(
+        () => mockCreate(
+          name: any(named: 'name'),
+          playerNames: any(named: 'playerNames'),
+          config: any(named: 'config'),
+        ),
+      ).thenAnswer((_) async => _sampleGame);
+      when(() => mockGetAll()).thenAnswer((_) async => [_sampleGame]);
+    });
+
+    group('When newGame is called', () {
+      blocTest<HomeCubit, HomeState>(
+        'Then emits HomeGameCreated with the new game',
+        build: () => cubit,
+        act: (c) => c.newGame(
+          name: 'Testspiel',
+          playerNames: ['Anna', 'Bob', 'Cara', 'Dan'],
+        ),
+        expect: () => [
+          isA<HomeGameCreated>()
+              .having((s) => s.game, 'game', _sampleGame)
+              .having((s) => s.games, 'games', [_sampleGame]),
+        ],
+      );
+    });
+  });
 }

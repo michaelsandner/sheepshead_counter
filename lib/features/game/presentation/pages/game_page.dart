@@ -23,6 +23,14 @@ class GamePage extends StatelessWidget {
           Navigator.of(context).pop();
         }
       },
+      listenWhen: (previous, current) {
+        // Only pop when game transitions to finished, not when initially loaded as finished
+        final transitionedToFinished = previous is GameLoaded &&
+            !previous.game.isFinished &&
+            current is GameLoaded &&
+            current.game.isFinished;
+        return transitionedToFinished || current is GameError;
+      },
       builder: (context, state) {
         if (state is! GameLoaded) {
           return const Scaffold(
