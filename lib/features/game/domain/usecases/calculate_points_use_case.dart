@@ -1,6 +1,6 @@
-import '../entities/game_config.dart';
-import '../entities/game_entry.dart';
-import '../entities/game_mode.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game_config.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game_entry.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game_mode.dart';
 
 class CalculatePointsUseCase {
   int call(GameEntry entry, GameConfig config) {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../domain/entities/game.dart';
-import '../../domain/usecases/calculate_points_use_case.dart';
-import '../cubits/game_cubit.dart';
-import '../cubits/game_state.dart';
-import '../widgets/add_entry_bottom_sheet.dart';
-import '../widgets/game_entry_list_item.dart';
-import '../widgets/player_score_card.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game.dart';
+import 'package:sheepshead_counter/features/game/domain/usecases/calculate_points_use_case.dart';
+import 'package:sheepshead_counter/features/game/presentation/cubits/game_cubit.dart';
+import 'package:sheepshead_counter/features/game/presentation/cubits/game_state.dart';
+import 'package:sheepshead_counter/features/game/presentation/widgets/add_entry_bottom_sheet.dart';
+import 'package:sheepshead_counter/features/game/presentation/widgets/game_entry_list_item.dart';
+import 'package:sheepshead_counter/features/game/presentation/widgets/player_score_card.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({super.key});
@@ -124,9 +124,8 @@ class _PlayerScoreSection extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-          children: game.players
-              .map((p) => PlayerScoreCard(player: p))
-              .toList(),
+          children:
+              game.players.map((p) => PlayerScoreCard(player: p)).toList(),
         ),
       ),
     );

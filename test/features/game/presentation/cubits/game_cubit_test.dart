@@ -22,7 +22,7 @@ final _game = Game(
   id: 'g1',
   name: 'Testspiel',
   players: _players,
-  config: const GameConfig(rufspielPoints: 10),
+  config: const GameConfig(),
   entries: const [],
   createdAt: DateTime(2024),
 );

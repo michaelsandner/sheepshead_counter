@@ -1,4 +1,4 @@
-import '../entities/game.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game.dart';
 
 abstract class GameRepository {
   Future<List<Game>> getAllGames();

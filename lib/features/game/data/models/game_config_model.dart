@@ -1,4 +1,4 @@
-import '../../domain/entities/game_config.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game_config.dart';
 
 class GameConfigModel extends GameConfig {
   const GameConfigModel({

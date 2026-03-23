@@ -10,16 +10,17 @@ import 'package:sheepshead_counter/features/game/presentation/cubits/home_cubit.
 import 'package:sheepshead_counter/features/game/presentation/cubits/home_state.dart';
 
 class MockGetAllGamesUseCase extends Mock implements GetAllGamesUseCase {}
+
 class MockCreateGameUseCase extends Mock implements CreateGameUseCase {}
 
 final _sampleGame = Game(
   id: '1',
   name: 'Testspiel',
-  players: [
-    const Player(id: 'p1', name: 'Anna'),
-    const Player(id: 'p2', name: 'Bob'),
-    const Player(id: 'p3', name: 'Cara'),
-    const Player(id: 'p4', name: 'Dan'),
+  players: const [
+    Player(id: 'p1', name: 'Anna'),
+    Player(id: 'p2', name: 'Bob'),
+    Player(id: 'p3', name: 'Cara'),
+    Player(id: 'p4', name: 'Dan'),
   ],
   config: const GameConfig(),
   entries: const [],

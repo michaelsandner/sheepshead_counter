@@ -1,12 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
-import '../../domain/entities/game.dart';
-import '../../domain/entities/game_entry.dart';
-import '../../domain/entities/game_mode.dart';
-import '../../domain/entities/player.dart';
-import '../../domain/usecases/calculate_points_use_case.dart';
-import '../../domain/usecases/save_game_use_case.dart';
-import 'game_state.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game_entry.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game_mode.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/player.dart';
+import 'package:sheepshead_counter/features/game/domain/usecases/calculate_points_use_case.dart';
+import 'package:sheepshead_counter/features/game/domain/usecases/save_game_use_case.dart';
+import 'package:sheepshead_counter/features/game/presentation/cubits/game_state.dart';
 
 class GameCubit extends Cubit<GameState> {
   final SaveGameUseCase saveGame;
@@ -26,7 +26,9 @@ class GameCubit extends Cubit<GameState> {
     int? laufende,
   }) async {
     final currentState = state;
-    if (currentState is! GameLoaded) return;
+    if (currentState is! GameLoaded) {
+      return;
+    }
 
     final entry = GameEntry(
       id: _uuid.v4(),
@@ -51,7 +53,9 @@ class GameCubit extends Cubit<GameState> {
 
   Future<void> finishGame() async {
     final currentState = state;
-    if (currentState is! GameLoaded) return;
+    if (currentState is! GameLoaded) {
+      return;
+    }
     final updatedGame = currentState.game.copyWith(isFinished: true);
     await saveGame(updatedGame);
     emit(GameLoaded(game: updatedGame));

@@ -1,5 +1,5 @@
-import '../../domain/entities/game_entry.dart';
-import '../../domain/entities/game_mode.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game_entry.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game_mode.dart';
 
 class GameEntryModel extends GameEntry {
   const GameEntryModel({

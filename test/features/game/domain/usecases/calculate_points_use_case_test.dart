@@ -6,12 +6,7 @@ import 'package:sheepshead_counter/features/game/domain/usecases/calculate_point
 
 void main() {
   late CalculatePointsUseCase useCase;
-  const config = GameConfig(
-    rufspielPoints: 10,
-    soloPoints: 30,
-    wenzPoints: 30,
-    laufendePoints: 5,
-  );
+  const config = GameConfig();
 
   setUp(() {
     useCase = CalculatePointsUseCase();

@@ -1,7 +1,7 @@
-import '../../domain/entities/game.dart';
-import '../../domain/repositories/game_repository.dart';
-import '../datasources/game_local_data_source.dart';
-import '../models/game_model.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game.dart';
+import 'package:sheepshead_counter/features/game/domain/repositories/game_repository.dart';
+import 'package:sheepshead_counter/features/game/data/datasources/game_local_data_source.dart';
+import 'package:sheepshead_counter/features/game/data/models/game_model.dart';
 
 class GameRepositoryImpl implements GameRepository {
   final GameLocalDataSource localDataSource;

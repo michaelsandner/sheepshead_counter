@@ -1,4 +1,4 @@
-import '../../domain/entities/player.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/player.dart';
 
 class PlayerModel extends Player {
   const PlayerModel({

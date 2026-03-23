@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'game_mode.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game_mode.dart';
 
 class GameEntry extends Equatable {
   final String id;
@@ -19,5 +19,6 @@ class GameEntry extends Equatable {
   });
 
   @override
-  List<Object?> get props => [id, gameMode, winnerIds, spritze, laufende, timestamp];
+  List<Object?> get props =>
+      [id, gameMode, winnerIds, spritze, laufende, timestamp];
 }

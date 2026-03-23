@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/game.dart';
 import 'package:sheepshead_counter/features/game/domain/repositories/game_repository.dart';
 import 'package:sheepshead_counter/features/game/domain/usecases/create_game_use_case.dart';
 

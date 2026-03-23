@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/game_model.dart';
+import 'package:sheepshead_counter/features/game/data/models/game_model.dart';
 
 abstract class GameLocalDataSource {
   Future<List<GameModel>> getAllGames();
@@ -16,7 +16,9 @@ class GameLocalDataSourceImpl implements GameLocalDataSource {
   @override
   Future<List<GameModel>> getAllGames() async {
     final jsonString = sharedPreferences.getString(_key);
-    if (jsonString == null) return [];
+    if (jsonString == null) {
+      return [];
+    }
     final List<dynamic> jsonList = json.decode(jsonString) as List<dynamic>;
     return jsonList
         .map((j) => GameModel.fromJson(j as Map<String, dynamic>))

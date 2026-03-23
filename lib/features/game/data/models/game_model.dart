@@ -1,7 +1,7 @@
-import '../../domain/entities/game.dart';
-import 'game_config_model.dart';
-import 'game_entry_model.dart';
-import 'player_model.dart';
+import 'package:sheepshead_counter/features/game/domain/entities/game.dart';
+import 'package:sheepshead_counter/features/game/data/models/game_config_model.dart';
+import 'package:sheepshead_counter/features/game/data/models/game_entry_model.dart';
+import 'package:sheepshead_counter/features/game/data/models/player_model.dart';
 
 class GameModel extends Game {
   const GameModel({
@@ -33,9 +33,11 @@ class GameModel extends Game {
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
-        'players': players.map((p) => PlayerModel.fromEntity(p).toJson()).toList(),
+        'players':
+            players.map((p) => PlayerModel.fromEntity(p).toJson()).toList(),
         'config': GameConfigModel.fromEntity(config).toJson(),
-        'entries': entries.map((e) => GameEntryModel.fromEntity(e).toJson()).toList(),
+        'entries':
+            entries.map((e) => GameEntryModel.fromEntity(e).toJson()).toList(),
         'isFinished': isFinished,
         'createdAt': createdAt.toIso8601String(),
       };
