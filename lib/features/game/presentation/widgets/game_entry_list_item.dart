@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/game_entry.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/game_mode.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/player.dart';
+import 'package:sheepshead_counter/domain/entities/game_entry.dart';
+import 'package:sheepshead_counter/domain/entities/game_mode.dart';
+import 'package:sheepshead_counter/domain/entities/player.dart';
+import 'package:sheepshead_counter/features/game/presentation/widgets/player_colors.dart';
 
 class GameEntryListItem extends StatelessWidget {
   final GameEntry entry;
@@ -17,10 +18,11 @@ class GameEntryListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final winnerNames = players
-        .where((p) => entry.winnerIds.contains(p.id))
-        .map((p) => p.name)
-        .join(', ');
+    final winners = players
+        .asMap()
+        .entries
+        .where((e) => entry.winnerIds.contains(e.value.id))
+        .toList();
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4),
@@ -29,7 +31,25 @@ class GameEntryListItem extends StatelessWidget {
           child: Text(_gameModeShort(entry.gameMode)),
         ),
         title: Text(_gameModeName(entry.gameMode)),
-        subtitle: Text('Gewinner: $winnerNames'),
+        subtitle: winners.isEmpty
+            ? const Text('Gewinner: –')
+            : Text.rich(
+                TextSpan(
+                  children: [
+                    const TextSpan(text: 'Gewinner: '),
+                    for (int i = 0; i < winners.length; i++) ...[
+                      TextSpan(
+                        text: winners[i].value.name,
+                        style: TextStyle(
+                          color: PlayerColors.accent(winners[i].key),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      if (i < winners.length - 1) const TextSpan(text: ', '),
+                    ],
+                  ],
+                ),
+              ),
         trailing: _EntryDetails(entry: entry, value: value),
       ),
     );
@@ -43,6 +63,8 @@ class GameEntryListItem extends StatelessWidget {
         return 'Solo';
       case GameMode.wenz:
         return 'Wenz';
+      case GameMode.geier:
+        return 'Geier';
     }
   }
 
@@ -54,6 +76,8 @@ class GameEntryListItem extends StatelessWidget {
         return 'S';
       case GameMode.wenz:
         return 'W';
+      case GameMode.geier:
+        return 'G';
     }
   }
 }

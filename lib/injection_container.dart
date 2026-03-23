@@ -1,11 +1,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sheepshead_counter/features/game/data/datasources/game_local_data_source.dart';
-import 'package:sheepshead_counter/features/game/data/repositories/game_repository_impl.dart';
-import 'package:sheepshead_counter/features/game/domain/repositories/game_repository.dart';
-import 'package:sheepshead_counter/features/game/domain/usecases/get_all_games_use_case.dart';
-import 'package:sheepshead_counter/features/game/domain/usecases/save_game_use_case.dart';
-import 'package:sheepshead_counter/features/game/domain/usecases/create_game_use_case.dart';
+import 'package:sheepshead_counter/data/datasources/game_local_data_source.dart';
+import 'package:sheepshead_counter/data/repositories/game_repository_impl.dart';
+import 'package:sheepshead_counter/domain/repositories/game_repository.dart';
+import 'package:sheepshead_counter/domain/usecases/get_all_games_use_case.dart';
+import 'package:sheepshead_counter/domain/usecases/save_game_use_case.dart';
+import 'package:sheepshead_counter/domain/usecases/create_game_use_case.dart';
 import 'package:sheepshead_counter/features/game/presentation/cubits/home_cubit.dart';
 import 'package:sheepshead_counter/features/game/presentation/cubits/game_cubit.dart';
 

@@ -9,16 +9,18 @@
 - linting with analyze options and lints package for code quality and common code style rules
 - pipeline with code analysis, unit tests, and widget tests, and builds for each platform
 - Dependency injection with get_it
+- Use fvm for managing Flutter versions across the project
 
 ## Architecture
 - Clean Architecture approach is used with layers: domain, data, presentation
 
 ### Domain layer
 - Contains business logic and entities
-- Use cases for each feature (e.g. GetAllGamesUseCase, SaveGameUseCase, CreateGameUseCase)
+- Use cases for all features (e.g. GetAllGamesUseCase, SaveGameUseCase, CreateGameUseCase)
 - Repositories folder: Repositories as interfaces that define the contract for data access (e.g. GameRepository)
 
 ### Data layer
+- Contains implementations of repositories and data sources for all features
 
 ### Presentation layer
 - Presentation is organized by feature where each feature has its own folder

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/game_config.dart';
-import 'package:sheepshead_counter/features/game/domain/usecases/create_game_use_case.dart';
-import 'package:sheepshead_counter/features/game/domain/usecases/get_all_games_use_case.dart';
+import 'package:sheepshead_counter/domain/entities/game_config.dart';
+import 'package:sheepshead_counter/domain/usecases/create_game_use_case.dart';
+import 'package:sheepshead_counter/domain/usecases/get_all_games_use_case.dart';
 import 'package:sheepshead_counter/features/game/presentation/cubits/home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {

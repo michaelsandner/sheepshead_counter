@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/game.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/game_entry.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/game_mode.dart';
-import 'package:sheepshead_counter/features/game/domain/entities/player.dart';
-import 'package:sheepshead_counter/features/game/domain/usecases/calculate_points_use_case.dart';
-import 'package:sheepshead_counter/features/game/domain/usecases/save_game_use_case.dart';
+import 'package:sheepshead_counter/domain/entities/game.dart';
+import 'package:sheepshead_counter/domain/entities/game_entry.dart';
+import 'package:sheepshead_counter/domain/entities/game_mode.dart';
+import 'package:sheepshead_counter/domain/entities/player.dart';
+import 'package:sheepshead_counter/domain/usecases/calculate_points_use_case.dart';
+import 'package:sheepshead_counter/domain/usecases/save_game_use_case.dart';
 import 'package:sheepshead_counter/features/game/presentation/cubits/game_state.dart';
 
 class GameCubit extends Cubit<GameState> {
@@ -77,6 +77,7 @@ class GameCubit extends Cubit<GameState> {
           break;
         case GameMode.solo:
         case GameMode.wenz:
+        case GameMode.geier:
           // 1 winner gets +3*points, 3 losers each get -points
           delta = isWinner ? points * 3 : -points;
           break;
