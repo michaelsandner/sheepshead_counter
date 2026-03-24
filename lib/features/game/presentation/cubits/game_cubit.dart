@@ -82,7 +82,9 @@ class GameCubit extends Cubit<GameState> {
 
     return players.map((player) {
       // Sitting-out player receives no points this round
-      if (player.id == sittingOutPlayerId) return player;
+      if (player.id == sittingOutPlayerId) {
+        return player;
+      }
 
       final isWinner = entry.winnerIds.contains(player.id);
       int delta = 0;

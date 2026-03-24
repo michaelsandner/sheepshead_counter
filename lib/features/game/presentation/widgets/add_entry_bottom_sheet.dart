@@ -31,7 +31,9 @@ class _AddEntryDialogState extends State<AddEntryDialog> {
 
   // For 5-player games, one player sits out each round based on round number
   String? get _sittingOutPlayerId {
-    if (_players.length != 5) return null;
+    if (_players.length != 5) {
+      return null;
+    }
     final index = widget.game.entries.length % _players.length;
     return _players[index].id;
   }
